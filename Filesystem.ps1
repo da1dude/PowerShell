@@ -1,0 +1,2 @@
+﻿Invoke-Command -ComputerName fsdeapp271.sde.deere.com -ScriptBlock { Get-ChildItem -Directory 'E:\' -Recurse -EA 0 | 
+	ForEach-Object -Begin { $fso = New-Object -comobject Scripting.FileSystemObject } -Process { $path = $input.fullname; $folder = $fso.GetFolder($path); $size = $folder.size; [PSCustomObject]@{'Name' = $path;'Size' = [math]::Round(($size / 1gb), 2) } | Sort-Object Size -Descending | Select-Object -First 10 }} | Format-Table -AutoSize @{Name='Name'; Expression={$_.Name -replace ' ', '<space>'}}, @{Name='Size<space>(GB)'; Expression={$_.Size}}
